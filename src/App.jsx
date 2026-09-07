@@ -7,18 +7,17 @@ import './index.css'
 import Navbar from './Navbar.jsx'
 import Mainimg from './Mainimg.jsx'
 import Footer from './Footer.jsx'
-function App() {
-  //const [count, setCount] = useState(0)
+import BookLinks from './BookLinks.jsx'
+import DostoevskyProfile from './About.jsx'
+import { BrowserRouter as Router, Route, Routes,Link } from 'react-router-dom'
 
-  return (
-    <>
-    <h1 className="flex justify-center items-center"> Welcome to the Fyodor Dostoevsky Fansite!</h1>
-    <Navbar />
-
-      <Mainimg />
-      <Footer />
-    </>
+   function App() {
+    //const [count, setCount] = useState(0) 
+    return ( <> <h1 className="flex justify-center items-center">
+       Welcome to the Fyodor Dostoevsky Fansite!</h1> 
+       <Navbar /> <Routes> <Route path="/books" element={<BookLinks />} /> <Route path="/about" element={<DostoevskyProfile />} /> </Routes> <Mainimg /> <Footer /> </> 
+       
+    
   )
-}
-
+   }
 export default App

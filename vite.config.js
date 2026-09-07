@@ -4,5 +4,5 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/my-react-apptwcss2/',
+  base: '/Fyodor-Dostoevsky-site-2-/',
 })

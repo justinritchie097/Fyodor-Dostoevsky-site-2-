@@ -9,13 +9,24 @@ import Mainimg from './Mainimg.jsx'
 import Footer from './Footer.jsx'
 import BookLinks from './BookLinks.jsx'
 import DostoevskyProfile from './About.jsx'
-import { BrowserRouter as Router, Route, Routes,Link } from 'react-router-dom'
-
+import { BrowserRouter as Router, Route, Routes,Link, useLocation, Navigate} from 'react-router-dom'
+import Home from './home.jsx'
    function App() {
+       const location = useLocation();
+     
     //const [count, setCount] = useState(0) 
-    return ( <> <h1 className="flex justify-center items-center">
-       Welcome to the Fyodor Dostoevsky Fansite!</h1> 
-       <Navbar /> <Routes> <Route path="/books" element={<BookLinks />} /> <Route path="/about" element={<DostoevskyProfile />} /> </Routes> <Mainimg /> <Footer /> </> 
+    return ( <> 
+      <Navbar />
+        <Routes> 
+         <Route path="/Fyodor-Dostoevsky-site-2-/" element={<Home />} />
+         <Route path="/books" element={<BookLinks />}  />
+         <Route path="/about" element={<DostoevskyProfile />} /> 
+        
+         </Routes> 
+          
+
+<Footer />
+       </> 
        
     
   )

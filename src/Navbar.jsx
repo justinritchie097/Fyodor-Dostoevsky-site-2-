@@ -7,12 +7,16 @@
 return (
     <>
     <div className="flex justify-around ">
-       
-<Link to="/books">
-  <nav className="border-double border-4 border-light-blue-500 p-8 font-extrabold bg-blue-500 rounded-full py-3 px-6">
-    Books
-  </nav>
-</Link>
+      <Link to="/Fyodor-Dostoevsky-site-2-/">
+        <nav className="border-double border-4 border-light-blue-500 p-8 font-extrabold bg-blue-500 rounded-full py-3 px-6">
+          Home
+        </nav>
+      </Link>
+      <Link to="/books">
+        <nav className="border-double border-4 border-light-blue-500 p-8 font-extrabold bg-blue-500 rounded-full py-3 px-6">
+          Books
+        </nav>
+      </Link>
 
 
 <Link to="/about">

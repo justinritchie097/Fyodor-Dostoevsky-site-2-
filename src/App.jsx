@@ -18,7 +18,7 @@ import Home from './home.jsx'
     return ( <> 
       <Navbar />
         <Routes> 
-         <Route path="Fyodor-Dostoevsky-site-2-/" element={<Home />} />
+         <Route path="/Fyodor-Dostoevsky-site-2-/" element={<Home />} />
          <Route path="/books" element={<BookLinks />}  />
          <Route path="/about" element={<DostoevskyProfile />} /> 
         

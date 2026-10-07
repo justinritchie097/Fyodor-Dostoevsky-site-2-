@@ -1,15 +1,11 @@
 import BookLinks from './BookLinks.jsx';
-
+import { useNavigate } from 'react-router-dom';
 import { BrowserRouter, Link } from 'react-router-dom';
 function Navbar() {
+  const navigate = useNavigate();
   return (
     <>
-      <div className="flex justify-around ">
-        <Link to="/">
-          <nav className="border-double border-4 border-light-blue-500 p-8 font-extrabold bg-blue-500 rounded-full py-3 px-6">
-            Home
-          </nav>
-        </Link>
+      <div onClick={() => setIsVisible(false)} className="flex justify-around ">
         <Link to="/books">
           <nav className="border-double border-4 border-light-blue-500 p-8 font-extrabold bg-blue-500 rounded-full py-3 px-6">
             Books

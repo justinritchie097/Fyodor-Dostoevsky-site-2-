@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import heroImg from './assets/hero.png';
-import reactLogo from './assets/react.svg';
-import viteLogo from './assets/vite.svg';
+
 import './App.css';
 import './index.css';
 import Navbar from './Navbar.jsx';
@@ -9,6 +7,8 @@ import Mainimg from './Mainimg.jsx';
 import Footer from './Footer.jsx';
 import BookLinks from './BookLinks.jsx';
 import DostoevskyProfile from './About.jsx';
+
+import { useNavigate } from 'react-router-dom';
 import {
   BrowserRouter as Router,
   Route,
@@ -19,18 +19,16 @@ import {
 } from 'react-router-dom';
 import Home from './home.jsx';
 function App() {
-  const location = useLocation();
-
-  //const [count, setCount] = useState(0)
   return (
     <>
       <Navbar />
+
       <Routes>
-        <Route path="/" element={<Home />} />
         <Route path="/books" element={<BookLinks />} />
+
         <Route path="/about" element={<DostoevskyProfile />} />
       </Routes>
-
+      <Home />
       <Footer />
     </>
   );

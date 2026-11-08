@@ -4,7 +4,7 @@ Utilizing the react router, the purpose of this site is to expose more people to
 
 [Live Demo](https://justinritchie097.github.io/Fyodor-Dostoevsky-site-2-/) | [GitHub Repository](https://github.com/justinritchie097/Fyodor-Dostoevsky-site-2-)
 
-<img width="1356" height="631" alt="fs1" src="https://github.com/user-attachments/assets/a5dec196-f2d0-4282-9cdf-e2f2242099c4" />
+<img width="1364" height="672" alt="dostoevskywcf (1)" src="https://github.com/user-attachments/assets/3f0a4346-c25f-4aac-9544-77163f852552" />
 
 
 ## 📖 About the Project

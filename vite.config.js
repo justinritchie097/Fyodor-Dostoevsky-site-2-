@@ -4,5 +4,5 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ command }) => ({
   plugins: [react(), tailwindcss()],
-  base: command === 'build' ? '/Fyodor-Dostoevsky-site-2-/' : '/',
+  base: process.env.GITHUB_ACTIONS ? '/Fyodor-Dostoevsky-site-2-/' : '/',
 }));

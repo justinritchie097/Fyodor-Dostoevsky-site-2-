@@ -9,7 +9,7 @@
     "lint": "oxlint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
-    "deploy": "main -d dist"
+    "deploy": "gh-pages -d dist -b main"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.0",

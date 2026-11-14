@@ -73,7 +73,7 @@ export default function CommunityFeed({ session }) {
     };
   }, []);
 
-  // Inside handleSubmit
+  // 2. Handle publishing a new post
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!session?.user?.id) {
@@ -90,8 +90,14 @@ export default function CommunityFeed({ session }) {
       },
     ]);
     setLoading(false);
-    // ...
+
+    if (error) {
+      alert('Error creating post: ' + error.message);
+    } else {
+      setNewPost('');
+    }
   };
+
   // 3. Handle publishing a reply
   const handleReplySubmit = async (postId) => {
     if (!replyText.trim()) return;
@@ -130,52 +136,71 @@ export default function CommunityFeed({ session }) {
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Community Forum</h2>
+    <div className="w-full max-w-3xl mx-auto text-slate-900">
+      <h2 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 mb-6">
+        Community Forum
+      </h2>
 
       {/* Post Composer */}
       {session ? (
-        <form onSubmit={handleSubmit} style={styles.form}>
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white border border-slate-200 rounded-xl p-4 sm:p-5 shadow-sm mb-8 flex flex-col gap-3"
+        >
           <textarea
             rows="3"
             placeholder="Write anything on your mind related to Dostoevsky."
             value={newPost}
             onChange={(e) => setNewPost(e.target.value)}
-            style={styles.textarea}
+            className="w-full rounded-lg border border-slate-300 p-3 text-base sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600 resize-y"
           />
-          <button type="submit" disabled={loading} style={styles.button}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full sm:w-auto sm:self-end bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-400 text-white font-medium text-sm px-5 py-2.5 rounded-lg transition-colors"
+          >
             {loading ? 'Posting...' : 'Post'}
           </button>
         </form>
       ) : (
-        <p style={styles.signInPrompt}>
+        <div className="bg-indigo-50 border border-indigo-100 text-indigo-900 rounded-xl p-4 mb-8 text-sm sm:text-base text-center">
           Please sign in to join the conversation!
-        </p>
+        </div>
       )}
 
       {/* Feed List */}
-      <div style={styles.feed}>
+      <div className="space-y-4 sm:space-y-6">
         {posts.map((post) => {
           const authorName = post.profiles?.full_name || 'Anonymous User';
           const isPostOwner = session?.user?.id === post.user_id;
           const isReplyingHere = replyingToPostId === post.id;
 
-          // Added explicit return here!
           return (
-            <div key={post.id} style={styles.card}>
-              <div style={styles.header}>
-                <span style={styles.author}>{authorName}</span>
-                <span style={styles.date}>
+            <article
+              key={post.id}
+              className="bg-white border border-slate-200 rounded-xl p-4 sm:p-6 shadow-sm"
+            >
+              {/* Post Header */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
+                <span className="font-semibold text-slate-900 text-sm sm:text-base">
+                  {authorName}
+                </span>
+                <span className="text-xs text-slate-500">
                   {new Date(post.created_at).toLocaleString()}
                 </span>
               </div>
-              <p style={styles.content}>{post.content}</p>
 
-              <div style={styles.postActions}>
+              {/* Post Content */}
+              <p className="text-slate-800 text-sm sm:text-base leading-relaxed whitespace-pre-wrap break-words mb-4">
+                {post.content}
+              </p>
+
+              {/* Post Actions */}
+              <div className="flex flex-wrap items-center gap-3 pt-3 border-t border-slate-100">
                 {isPostOwner && (
                   <button
                     onClick={() => handleDeletePost(post.id)}
-                    style={styles.deleteBtn}
+                    className="text-xs sm:text-sm font-medium text-red-600 hover:text-red-800 py-1.5 px-2.5 rounded-md hover:bg-red-50 transition-colors"
                   >
                     Delete Post
                   </button>
@@ -186,7 +211,7 @@ export default function CommunityFeed({ session }) {
                       setReplyingToPostId(isReplyingHere ? null : post.id);
                       setReplyText('');
                     }}
-                    style={styles.replyToggleBtn}
+                    className="text-xs sm:text-sm font-medium text-indigo-600 hover:text-indigo-800 py-1.5 px-2.5 rounded-md hover:bg-indigo-50 transition-colors"
                   >
                     {isReplyingHere ? 'Cancel' : 'Respond'}
                   </button>
@@ -195,18 +220,18 @@ export default function CommunityFeed({ session }) {
 
               {/* Reply Input Form */}
               {isReplyingHere && (
-                <div style={styles.replyFormContainer}>
+                <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
                   <textarea
                     rows="2"
                     placeholder="Write a response..."
                     value={replyText}
                     onChange={(e) => setReplyText(e.target.value)}
-                    style={styles.textarea}
+                    className="w-full rounded-lg border border-slate-300 p-3 text-base sm:text-sm text-slate-800 placeholder-slate-400 focus:border-indigo-600 focus:outline-none focus:ring-1 focus:ring-indigo-600"
                   />
                   <button
                     onClick={() => handleReplySubmit(post.id)}
                     disabled={replyLoading}
-                    style={styles.replySubmitBtn}
+                    className="w-full sm:w-auto sm:self-end bg-slate-900 hover:bg-slate-800 disabled:bg-slate-400 text-white font-medium text-xs sm:text-sm px-4 py-2.5 rounded-lg transition-colors"
                   >
                     {replyLoading ? 'Sending...' : 'Send Reply'}
                   </button>
@@ -215,21 +240,23 @@ export default function CommunityFeed({ session }) {
 
               {/* Comments Thread */}
               {post.post_comments && post.post_comments.length > 0 && (
-                <div style={styles.commentsList}>
+                <div className="mt-4 pt-4 border-t border-slate-100 space-y-3 pl-3 sm:pl-5 border-l-2 border-indigo-100">
                   {post.post_comments.map((comment) => {
                     const commentAuthor =
                       comment.profiles?.full_name || 'Anonymous User';
                     const isCommentOwner =
                       session?.user?.id === comment.user_id;
 
-                    // Added explicit return here too!
                     return (
-                      <div key={comment.id} style={styles.commentCard}>
-                        <div style={styles.commentHeader}>
-                          <span style={styles.commentAuthor}>
+                      <div
+                        key={comment.id}
+                        className="bg-slate-50 rounded-lg p-3 sm:p-4"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                          <span className="font-semibold text-slate-800 text-xs sm:text-sm">
                             {commentAuthor}
                           </span>
-                          <span style={styles.date}>
+                          <span className="text-xs text-slate-400">
                             {new Date(comment.created_at).toLocaleTimeString(
                               [],
                               {
@@ -239,169 +266,28 @@ export default function CommunityFeed({ session }) {
                             )}
                           </span>
                         </div>
-                        <p style={styles.commentContent}>{comment.content}</p>
+                        <p className="text-slate-700 text-xs sm:text-sm leading-relaxed whitespace-pre-wrap break-words">
+                          {comment.content}
+                        </p>
                         {isCommentOwner && (
-                          <button
-                            onClick={() => handleDeleteComment(comment.id)}
-                            style={styles.deleteCommentBtn}
-                          >
-                            Delete
-                          </button>
+                          <div className="mt-2 flex justify-end">
+                            <button
+                              onClick={() => handleDeleteComment(comment.id)}
+                              className="text-xs font-medium text-red-600 hover:text-red-800 py-1 px-2 rounded hover:bg-red-100/60 transition-colors"
+                            >
+                              Delete{' '}
+                            </button>
+                          </div>
                         )}
                       </div>
                     );
                   })}
                 </div>
               )}
-            </div>
+            </article>
           );
         })}
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    maxWidth: '600px',
-    margin: '2rem auto',
-    padding: '1rem',
-    fontFamily: 'sans-serif',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    marginBottom: '2rem',
-  },
-  textarea: {
-    padding: '0.75rem',
-    borderRadius: '6px',
-    border: '1px solid #ccc',
-    fontSize: '1rem',
-    resize: 'vertical',
-  },
-  button: {
-    alignSelf: 'flex-end',
-    padding: '0.5rem 1.5rem',
-    backgroundColor: '#3ecf8e',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-  },
-  signInPrompt: {
-    color: '#666',
-    fontStyle: 'italic',
-    marginBottom: '1.5rem',
-  },
-  feed: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '1rem',
-  },
-  card: {
-    padding: '1rem',
-    borderRadius: '6px',
-    border: '1px solid #e1e4e8',
-    backgroundColor: '#ffffff',
-  },
-  header: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '0.5rem',
-  },
-  author: {
-    fontWeight: 'bold',
-    color: '#333',
-  },
-  date: {
-    fontSize: '0.8rem',
-    color: '#888',
-  },
-  content: {
-    margin: '0 0 0.5rem 0',
-    color: '#444',
-    whiteSpace: 'pre-wrap',
-  },
-  postActions: {
-    display: 'flex',
-    gap: '1rem',
-    alignItems: 'center',
-    marginTop: '0.5rem',
-  },
-  deleteBtn: {
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: '#e53e3e',
-    fontSize: '0.8rem',
-    cursor: 'pointer',
-    padding: 0,
-  },
-  replyToggleBtn: {
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: '#3182ce',
-    fontSize: '0.8rem',
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    padding: 0,
-  },
-  replyFormContainer: {
-    marginTop: '0.75rem',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.5rem',
-    paddingLeft: '1rem',
-    borderLeft: '2px solid #3182ce',
-  },
-  replySubmitBtn: {
-    alignSelf: 'flex-end',
-    padding: '0.4rem 1rem',
-    backgroundColor: '#3182ce',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '0.85rem',
-    cursor: 'pointer',
-  },
-  commentsList: {
-    marginTop: '1rem',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '0.75rem',
-    paddingLeft: '1rem',
-    borderLeft: '2px solid #e2e8f0',
-  },
-  commentCard: {
-    padding: '0.75rem',
-    borderRadius: '4px',
-    backgroundColor: '#f7fafc',
-    border: '1px solid #edf2f7',
-  },
-  commentHeader: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginBottom: '0.25rem',
-  },
-  commentAuthor: {
-    fontWeight: 'bold',
-    fontSize: '0.9rem',
-    color: '#2d3748',
-  },
-  commentContent: {
-    margin: '0 0 0.25rem 0',
-    fontSize: '0.9rem',
-    color: '#4a5568',
-    whiteSpace: 'pre-wrap',
-  },
-  deleteCommentBtn: {
-    backgroundColor: 'transparent',
-    border: 'none',
-    color: '#e53e3e',
-    fontSize: '0.75rem',
-    cursor: 'pointer',
-    padding: 0,
-  },
-};

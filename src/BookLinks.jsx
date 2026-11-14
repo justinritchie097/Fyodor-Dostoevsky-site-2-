@@ -46,26 +46,26 @@ function BookLinks() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-amber-200">
-      {/* Header Banner */}
-      <header className="bg-gradient-to-r from-slate-900 to-indigo-950 text-white py-16 px-6 text-center border-b-4 border-amber-500 shadow-lg">
+    <div className="w-full text-slate-900 font-sans selection:bg-amber-200">
+      {/* Header Banner: Scaled down padding & text for mobile */}
+      <header className="bg-gradient-to-r from-slate-900 to-indigo-950 text-white py-10 sm:py-14 md:py-16 px-4 sm:px-6 text-center rounded-2xl border-b-4 border-amber-500 shadow-lg mb-8 sm:mb-12">
         <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold tracking-wide mb-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold tracking-wide mb-3 sm:mb-4">
             Fyodor Dostoevsky
           </h1>
-          <p className="text-slate-300 italic text-base md:text-lg max-w-2xl mx-auto font-serif">
+          <p className="text-slate-300 italic text-sm sm:text-base md:text-lg max-w-2xl mx-auto font-serif">
             "Beauty will save the world"
           </p>
         </div>
       </header>
 
       {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <section className="w-full">
         {loading ? (
           /* Loading State skeleton container */
-          <div className="flex flex-col items-center justify-center py-20 space-y-4">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
-            <p className="text-lg font-medium text-slate-600 animate-pulse">
+          <div className="flex flex-col items-center justify-center py-16 sm:py-20 px-4 text-center space-y-4">
+            <div className="animate-spin rounded-full h-10 w-10 sm:h-12 sm:w-12 border-b-2 border-indigo-600"></div>
+            <p className="text-base sm:text-lg font-medium text-slate-600 animate-pulse">
               Indexing Google Library... Found{' '}
               <span className="text-indigo-600 font-bold">{totalFound}</span>{' '}
               unique volumes
@@ -73,26 +73,21 @@ function BookLinks() {
           </div>
         ) : (
           <div>
-            {/* Meta bar */}
-            <div className="flex items-center justify-between border-b border-slate-200 pb-5 mb-8">
-              <h2 className="text-xl font-semibold text-slate-800">
+            {/* Meta bar: Stacks cleanly on very narrow screens */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4 sm:pb-5 mb-6 sm:mb-8">
+              <h2 className="text-lg sm:text-xl font-semibold text-slate-800">
                 Collected Works
               </h2>
-              <span className="bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm">
+              <span className="self-start sm:self-auto bg-indigo-100 text-indigo-800 text-xs font-semibold px-3 py-1.5 rounded-full shadow-sm">
                 {books.length} Unique Titles Available
               </span>
             </div>
 
-            {/* Responsive Book Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+            {/* Responsive Book Grid: Tighter gaps on mobile, wider on desktop */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5 sm:gap-6 lg:gap-8">
               {books.map((book) => {
-                const {
-                  title,
-                  authors,
-                  publishedDate,
-                  imageLinks,
-                  description,
-                } = book.volumeInfo;
+                const { title, authors, publishedDate, imageLinks } =
+                  book.volumeInfo;
                 const year = publishedDate
                   ? publishedDate.split('-')[0]
                   : 'N/A';
@@ -100,10 +95,10 @@ function BookLinks() {
                 return (
                   <article
                     key={book.id}
-                    className="flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group"
+                    className="flex flex-col bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm hover:shadow-xl sm:hover:-translate-y-1 transition-all duration-300 group"
                   >
                     {/* Book Cover Frame */}
-                    <div className="bg-slate-100 p-6 flex items-center justify-center min-h-[220px] relative overflow-hidden border-b border-slate-100">
+                    <div className="bg-slate-100 p-4 sm:p-6 flex items-center justify-center min-h-[190px] sm:min-h-[220px] relative overflow-hidden border-b border-slate-100">
                       {imageLinks?.thumbnail ? (
                         <img
                           src={imageLinks.thumbnail.replace(
@@ -111,10 +106,11 @@ function BookLinks() {
                             'https://',
                           )}
                           alt={`${title} cover`}
-                          className="h-40 w-auto object-contain shadow-md rounded group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                          className="h-36 sm:h-40 w-auto object-contain shadow-md rounded group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="h-40 w-28 bg-slate-300 flex items-center justify-center rounded shadow-inner text-center p-4">
+                        <div className="h-36 sm:h-40 w-24 sm:w-28 bg-slate-300 flex items-center justify-center rounded shadow-inner text-center p-3 sm:p-4">
                           <span className="text-xs text-slate-500 font-serif italic">
                             No Cover Available
                           </span>
@@ -123,7 +119,7 @@ function BookLinks() {
                     </div>
 
                     {/* Book Metadata details */}
-                    <div className="p-5 flex flex-col flex-grow justify-between space-y-4">
+                    <div className="p-4 sm:p-5 flex flex-col flex-grow justify-between space-y-3 sm:space-y-4">
                       <div className="space-y-1">
                         <h3
                           className="font-serif font-bold text-slate-900 leading-snug text-base line-clamp-2 group-hover:text-indigo-600 transition-colors duration-200"
@@ -131,7 +127,7 @@ function BookLinks() {
                         >
                           {title}
                         </h3>
-                        <p className="text-xs font-medium text-slate-500">
+                        <p className="text-xs font-medium text-slate-500 line-clamp-1">
                           {authors ? authors.join(', ') : 'Fyodor Dostoevsky'}
                         </p>
                       </div>
@@ -149,15 +145,7 @@ function BookLinks() {
             </div>
           </div>
         )}
-      </main>
-
-      {/* Modern Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-8 text-center text-xs border-t border-slate-800 mt-20">
-        <p>
-          © 2026 Digital Library Project. Curating major literary history
-          handles safely via API.
-        </p>
-      </footer>
+      </section>
     </div>
   );
 }
